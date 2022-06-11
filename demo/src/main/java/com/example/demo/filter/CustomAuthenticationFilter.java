@@ -63,7 +63,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                         .stream().map(GrantedAuthority::getAuthority)
                                         .collect(Collectors.toList()))
                .sign(algorithm);
-
+        //레디스 , jdbc세션  - refresh 서버 저장이유 톰켓서버 날아가도 값은 살아있어서
        String refresh_token = JWT.create()
                .withSubject(user.getUsername()) //토큰 제목 - 토큰에서 사용자에 대한 식별 값이 됨
                .withExpiresAt(new Date(System.currentTimeMillis()+ 30 * 60 * 1000)) // 토큰 만료 시간 10분
