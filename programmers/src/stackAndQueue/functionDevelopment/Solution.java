@@ -31,8 +31,6 @@ public class Solution {
             }
         }
 
-        System.out.println(complete);
-
         int idx = 0;
         int distribute = 1;
         List<Integer> solution = new ArrayList<>();
