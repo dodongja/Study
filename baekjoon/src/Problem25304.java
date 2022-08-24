@@ -17,11 +17,11 @@ public class Problem25304 {
             st = new StringTokenizer(br.readLine(), " ");
             tmp += Integer.parseInt(st.nextToken()) * Integer.parseInt(st.nextToken());
         }
-        
+
         if(X == tmp){
-            System.out.println("YES");
+            System.out.println("Yes");
         }else{
-            System.out.println("NO");
+            System.out.println("No");
         }
     }
 }
