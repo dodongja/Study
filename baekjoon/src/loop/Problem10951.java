@@ -1,28 +1,25 @@
 package loop;
 
 import java.io.*;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Problem10951 {
     public static void main(String[] args) throws IOException {
-       Scanner sc = new Scanner(System.in);
-       int[] answer = new int[5];
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int a;
-        int b;
+        StringTokenizer st;
 
-        for(int i = 0; i < 5; i++){
-            a = sc.nextInt();
-            b = sc.nextInt();
+        while(true){
+            try {
+                st = new StringTokenizer(br.readLine(), " ");
 
-            answer[i] = a + b;
+                int a = Integer.parseInt(st.nextToken());
+                int b = Integer.parseInt(st.nextToken());
+                System.out.println(a+b);
+            } catch(Exception e){
+                break;
+            }
+
         }
-
-        for(int i = 0; i < 5; i++){
-            System.out.println(answer[i]);
-        }
-
-
     }
 }
