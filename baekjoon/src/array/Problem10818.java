@@ -21,7 +21,7 @@ public class Problem10818 {
         for(int i = 0; i < n; i++){
             answer[i] = Integer.parseInt(st.nextToken());
         }
-
+        //sort가 메모리 많이 잡아먹는듯?
         Arrays.sort(answer);
 
         bw.write(answer[0] + " " + answer[n-1]);
