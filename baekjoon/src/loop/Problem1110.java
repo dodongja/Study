@@ -21,7 +21,7 @@ public class Problem1110 {
             }else{
                 n = ((n%10)*10) + ((n/10)+(n%10))%10;
             }
-            
+
             if(x == n){
                 break;
             }
