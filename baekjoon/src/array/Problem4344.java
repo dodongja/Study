@@ -36,7 +36,7 @@ public class Problem4344 {
             }
 
             result[i] = Math.round(pass/num*100*1000)/1000f;
-            
+
             sum = 0;
             pass = 0;
         }
