@@ -14,11 +14,6 @@ public class Problem1065 {
 
         int n = Integer.parseInt(br.readLine());
 
-        //각자리숫자를 구함
-        //차이를 구해야함
-        //
-        for(int i  = 1; i <= n; i++){
 
-        }
     }
 }
