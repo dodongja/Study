@@ -31,7 +31,7 @@ public class Problem1157 {
                 answer = '?';
             }
         }
-        
+     
         bw.write(answer);
         bw.close();
 
