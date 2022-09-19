@@ -26,13 +26,13 @@ public class Solution {
 
         for (int i = 1; ; i++) {
             int sum = 0;
-
+        //올라간 애들 총 무게
             if(!r.isEmpty()) {
                 for (int s : r) {
                     sum += s;
                 }
             }
-
+        //시간되면 나가세요~
         if(!t.isEmpty()) {
             if (t.peek() + bridge_length == i) {
                 sum -= r.peek();
@@ -45,7 +45,7 @@ public class Solution {
                 }
             }
         }
-
+            //대기중인애 올려주고 몇초에 올라갔는지
             if(!q.isEmpty()) {
                 if (sum + q.peek() <= weight) {
                     r.add(q.poll());
