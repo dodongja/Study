@@ -14,6 +14,14 @@ public class Problem1065 {
 
         int n = Integer.parseInt(br.readLine());
 
+        int a;
+        int b;
+        int count = 0;
+
+        while(n/10 !=0){
+
+        }
+
 
     }
 }
