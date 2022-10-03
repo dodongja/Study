@@ -14,11 +14,13 @@ public class Problem1065 {
 
         int n = Integer.parseInt(br.readLine());
 
-        int a;
-        int b;
-        int count = 0;
-
-        while(n/10 !=0){
+        //일단 2자리수까지는 전부 한수 인거같음
+        // 그럼 나머지 3자리숫자부터는 어떻게 비교하냐가 문제인데
+        //일단 10으로 나누고 나머지가 각 자릿수이긴함
+        //
+        if(n < 100){
+            System.out.println(n);
+        }else{
 
         }
 
