@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/yMaker/modify.css">
+    <title>Title</title>
+
+</head>
+<body>
+    <h3>수정하기</h3>
+    <section id="board">
+        <input type="text" placeholder="아이디" readonly/>
+        <input type="text" id="id" name="id" readonly/>
+        <br>
+        <input type="text" placeholder="이름" readonly/>
+        <input type="text" id="name" name="name"/>
+        <br>
+        <input type="text" placeholder="성별" readonly/>
+        <input type="radio" id="male" name="gender" value="남">
+        <label for="male">남</label>
+        <input type="radio" id="female" name="gender" value="여">
+        <label for="female">여</label>
+
+        <br>
+        <!-- 국가 -->
+        <div class="countryMultiselect">
+            <div class="countryBox" onclick="showCheckboxes('countryCheckBox')">
+                <select>
+                    <option>국가</option>
+                </select>
+                <div class="countrySelect"></div>
+            </div>
+            <div id="countryCheckBox">
+                <label for="한국">
+                    <input type="checkbox" name="checkbox" id="한국" value="한국"
+                           onclick="loadCity(this);checkOnlyOne(this);"/>한국</label>
+                <label for="일본">
+                    <input type="checkbox" name="checkbox" id="일본" value="일본"
+                           onclick="loadCity(this);checkOnlyOne(this);"/>일본</label>
+                <label for="중국">
+                    <input type="checkbox" name="checkbox" id="중국" value="중국"
+                           onclick="loadCity(this);checkOnlyOne(this);"/>중국</label>
+            </div>
+        </div>
+
+        <!-- 도시 -->
+        <div class="cityMultiselect">
+            <div class="cityBox" onclick="showCheckboxes('cityCheckBox')">
+                <select>
+                    <option>도시</option>
+                </select>
+                <div class="citySelect"></div>
+            </div>
+            <div id="cityCheckBox">
+            </div>
+        </div>
+
+        <div>
+            <button type="button" onclick="saveBtn()">저장</button>
+            <button type="button" onclick="cancelBtn()">취소</button>
+        </div>
+    </section>
+
+</body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+        $(document).ready(function(){
+
+              $('#id').val(window.opener.id);
+
+              $('#name').val(window.opener.name);
+
+              var gender = document.getElementsByName('gender')[0].value
+              gender = window.opener.gender;
+              $(":radio[name='gender'][value='" + gender +"']").attr('checked', true);
+
+              var country = window.opener.country;
+              document.getElementById(country).checked = true;
+              loadCity(country);
+
+              var city = window.opener.city;
+              var cityArr = city.split(', ');
+              console.log(cityArr);
+
+              for(let i = 0; i < cityArr.length; i++){
+                console.log(cityArr[i]);
+                document.getElementById(cityArr[i]).checked = true;
+         }
+
+
+
+        });
+    //combo box
+    function loadCity(e) {
+
+        let korea=["서울","부산","대전","대구"];
+        let japan=["도쿄","오사카","후쿠오카","교토"];
+        let china=["상하이","광저우","산시성","베이징"];
+
+        var name = "";
+        var target = $("#cityCheckBox");
+        name = "dynamicCheckBox";
+
+
+        if(e == "한국") var d = korea;
+        else if(e == "일본") var d = japan;
+        else if(e == "중국") var d = china;
+
+        var str = "";
+        target.empty();
+        str = "<label for='전체'>" +
+                   "<input type='checkbox' name='" + name + "' id='all' " +
+                                           "value='checkAll' onclick='checkAll(this)'/>전체</label>"
+
+
+        $.each(d, function(i){
+                str += "<label for='" + d[i] + "'>";
+                str += "<input type='checkbox' name='" + name + "' id='" + d[i] + "'"
+                        + " value='" + d[i] + "'/>"
+                        + d[i] + "</label>";
+        });
+
+
+        target.append(str);
+    }
+
+    //국가 , 나라 선택
+    var expanded = false;
+
+    function showCheckboxes(e) {
+           var checkboxes = document.getElementById(e);
+
+          if (!expanded) {
+            checkboxes.style.display = "block";
+            expanded = true;
+          } else {
+            checkboxes.style.display = "none";
+            expanded = false;
+          }
+    }
+    //체크 하나만
+    function checkOnlyOne(e) {
+         console.log(e);
+        const checkboxes
+          = document.getElementsByName(e.name);
+
+        checkboxes.forEach((cb) => {
+            cb.checked = false;
+        })
+
+        e.checked = true;
+    }
+
+
+       //저장
+       function saveBtn() {
+                    if($('#id').val() ==""){alert("다 기입하세요"); return;}
+                    var id = $('#id').val();
+
+                    if($('#name').val() ==""){ alert("다 기입하세요"); return;}
+                    var name = $('#name').val();
+
+                    if($('input[name="gender"]:checked').val() == undefined){ alert("다 기입하세요"); return;}
+                    var gender = $('input[name="gender"]:checked').val();
+
+                    if($('#country').val() ==""){ alert("다 기입하세요"); return;}
+                    var country =  $('input[name="addCheckbox"]:checked').val();
+
+                    var str = "";
+                    var cityCheck = $('input[name="addDynamicCheckBox"]:checked');
+                    cityCheck.each(function(i){
+                        if(str == ""){
+                            if( $(this).val() == "checkAll"){
+                                str = "";
+                            }else{
+                                str = $(this).val();
+                          }
+                        }else{
+                          str += ", " + $(this).val();
+                        }
+                    });
+                    if(str == ""){ alert("다 기입하세요"); return;}
+                    var city = str;
+
+
+                var boardRequest = {
+                        "id" : id,
+                        "name" : name,
+                        "gender" : gender,
+                        "country" : country,
+                        "city" : city
+                    };
+
+            $.ajax({
+                    url         :   "/board/modify",
+                    dataType    :   "json",
+                    contentType :   "application/x-www-form-urlencoded; charset=UTF-8",
+                    data        :    boardRequest,
+                    type        :   "post",
+                    success     :    function(retVal){
+                                alert(retVal.message);
+                                console.log(retVal.status);
+                                window.close();
+                                window.opener.location.reload();
+                    },
+                    error       :    function(e){
+                                //다른 에러 났을때도 아이디 중복입니다 코드 내뱉으니깐
+                                //id값가지고 데이터베이스에서 중복이 있는지 찾는게 맞는듯
+                                //근데 id가 pk라서 id를 변경 필수로 해야함 딱히 어떻게 구별할 방법이없음
+                                //하면 할 수 있을거 같은데 pk변경이 좋은건가??
+                               console.log(e.status);
+                               //alert("아이디 중복 입니다");
+                    }
+                });
+       }
+
+       function cancelBtn() {
+            window.close();
+       }
+
+
+
+</script>
+</html>
