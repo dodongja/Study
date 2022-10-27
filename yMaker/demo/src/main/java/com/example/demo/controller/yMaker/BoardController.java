@@ -26,7 +26,7 @@ public class BoardController {
     public String domain(){
         log.info("main");
 
-        return "/board";
+        return "yMaker/board";
     }
 
     @ResponseBody
