@@ -1,19 +1,27 @@
 package array.bigestNumber;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Solution {
     public static void main(String[] args) {
-        int[] arr = new int[]{1,22,11,33,5,521 ,53};
-        String[] str = new String[7];
-        for(int i = 0; i < 7; i++){
-            str[i] = String.valueOf(arr[i]);
+        int[] arr = new int[]{3, 30, 34, 5, 9};
+        StringBuilder answer = new StringBuilder();
+        List<String> str = new ArrayList<>();
+
+        for(int i = 0; i < arr.length; i++){
+
+           str.add(String.valueOf(arr[i]));
         }
-        Arrays.sort(str, Collections.reverseOrder());
-        for(int i = 0; i < 7; i++){
-            System.out.println(str[i]);
-        }
+
+        Collections.sort(str, Collections.reverseOrder());
+
+
+
+        System.out.println(answer);
+
+
     }
     public String solution(int[] numbers) {
         String answer = "";
