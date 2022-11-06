@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"unsafe"
 )
 
 /*
@@ -96,5 +95,11 @@ type User struct {
 func main() {
 	var user = User{15, 23.3}
 
-	fmt.Println(unsafe.Sizeof(user))
+	user2 := user
+
+	var p1 *User = &user
+	var p2 *User = &user2
+
+	fmt.Printf("%p\n", p1)
+	fmt.Printf("%p\n", p2)
 }
