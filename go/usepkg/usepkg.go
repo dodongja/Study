@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"go/usepkg/custompkg"
+	"go/usepkg/custompkg" // 하위 패키지는 패키지 경로 적어 줘야함
 
-	"github.com/guptarohit/asciigraph"
+	"github.com/guptarohit/asciigraph"         // go mod tidy를 실행해 패키지 다운로드 후 go.mod파일과 go.sum 파일에 적어주게 됨
 	"github.com/tuckersGo/musthaveGo/ch16/expkg"
 )
 

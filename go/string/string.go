@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
-
+import (
+	"fmt"
+	"strings"
+)
 func main() {
 	/*poet1 := "죽는 날까지 하늘을 우러러\n한 점 부끄럼이 없기를,\n잎새에 이는 바람에도\n나는 괴로워 했다.\n"
 
@@ -29,11 +31,12 @@ func main() {
 		fmt.Printf("%c\n", v)
 	}*/
 
-	str1 := "안녕하세요"
+	/*str1 := "안녕하세요"
 	str2 := str1
 	fmt.Println(str2)
 	str1 = "안녕히가세요"
 	fmt.Println(str1)
-	fmt.Println(str2)
+	fmt.Println(str2)*/
+
 
 }
