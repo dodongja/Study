@@ -1,11 +1,7 @@
 package main
 
 import (
-	"bufio"
-	"errors"
 	"fmt"
-	"strconv"
-	"strings"
 )
 
 /*func ReadFile(filename string) (string, error) {
@@ -82,19 +78,19 @@ func main() {
 		fmt.Println("회원 가입됐습니다.")
 	}
 }*/
-
+/*
 func MultipleFromString(str string) (int, error) {
 	scanner := bufio.NewScanner(strings.NewReader(str))
-	scanner.Split(bufio.ScanWords)
+	scanner.Split(bufio.ScanWords) // bufio.ScanWords 한 단어씩 , ScanLines 한줄 씩 끊어서 읽음
 
 	pos := 0
-	a, n, err := readNextInt(scanner)
+	a, n, err := readNextInt(scanner) // 123 들어가고
 	if err != nil {
 		return 0, fmt.Errorf("Failed to readNextInt(), pos:%d err:%w", pos, err)
 	}
 
 	pos += n + 1
-	b, n, err := readNextInt(scanner)
+	b, n, err := readNextInt(scanner) // 3들어감
 	if err != nil {
 		return 0, fmt.Errorf("Failed to readNextInt(), pos:%d err:%w", pos, err)
 	}
@@ -107,7 +103,7 @@ func readNextInt(scanner *bufio.Scanner) (int, int, error) {
 	if !scanner.Scan() {
 		return 0, 0, fmt.Errorf("Failed to scan")
 	}
-	fmt.Println(scanner.Text())
+
 	word := scanner.Text()
 	number, err := strconv.Atoi(word)
 	if err != nil {
@@ -127,9 +123,23 @@ func readEq(eq string) {
 			fmt.Println("NumberError:", numError)
 		}
 	}
-}
+}*/
 
+func divide(a, b int) {
+	if b == 0 {
+		panic(42)
+	}
+
+	fmt.Println(a + b)
+}
 func main() {
-	readEq("123 3")
-	readEq("123 abc")
+	//readEq("123 3")
+	//readEq("123 abc")
+	divide(9, 0)
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("복구 함", r)
+		}
+	}()
+
 }
