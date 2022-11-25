@@ -13,17 +13,54 @@ public class Problem1065 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
+        int answer;
+        int tmp;
+        int placeValue1 = 0;
+        int placeValue2;
+        int minus = 0;
+        int cnt;
+        boolean check;
 
         //일단 2자리수까지는 전부 한수 인거같음
-        // 그럼 나머지 3자리숫자부터는 어떻게 비교하냐가 문제인데
-        //일단 10으로 나누고 나머지가 각 자릿수이긴함
-        //
         if(n < 100){
             System.out.println(n);
-        }else{
+        } else {
+            answer = 99;
 
+            for (int i = 100; i <= n; i++) {
+                tmp = i;
+                cnt = 0;
+                check = true;
+                while (check) {
+                    if (cnt == 0) {
+                        placeValue1 = tmp % 10;
+                        tmp /= 10;
+                        cnt++;
+                        continue;
+                    } else {
+                        placeValue2 = tmp % 10;
+                        if (cnt == 2) {
+                            if (placeValue1 - placeValue2 != minus) {
+                                check = false;
+                                continue;
+                            } else {
+                                cnt = 1;
+                            }
+                        }
+                        minus = placeValue1 - placeValue2;
+                        placeValue1 = placeValue2;
+                        cnt++;
+                    }
+                    tmp /= 10;
+
+                    if (tmp == 0) {
+                        answer++;
+                        check = false;
+                    }
+                }
+            }
+
+            System.out.println(answer);
         }
-
-
     }
 }
