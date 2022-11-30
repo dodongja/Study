@@ -233,7 +233,7 @@ func square(ctx context.Context) {
 
 func main() {
 	wg.Add(1)
-
+	
 	ctx := context.WithValue(context.Background(), "number", 9)
 
 	go square(ctx)
