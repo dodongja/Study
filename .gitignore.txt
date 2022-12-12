@@ -1,6 +1,0 @@
-*.class
-.classpath
-.project
-*.jar
-*.properties
-.idea/
