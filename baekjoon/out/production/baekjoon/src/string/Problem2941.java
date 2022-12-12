@@ -3,8 +3,6 @@ package string;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Problem2941 {
     public static void main(String[] args) throws IOException {
@@ -19,10 +17,6 @@ public class Problem2941 {
         //크로아티아 알파벳 비교 메서드를 하나 만드는게 좋을듰?
         // c , d, l, n , s , z
         //입력받고 글자 하나하나 조회
-        Map<String, Integer> alphabet = new HashMap<>();
-        alphabet.put("c=", 0);
-        alphabet.put("c=", 0);
-
             int numberOfCroatiaAlphabet = 0;
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -54,7 +48,7 @@ public class Problem2941 {
                         }
                     }
 
-                    if (input[i] == 'l') {
+                    if (input[i] == 'l' || input[i] == 'n') {
                         if (input[i + 1] == 'j') {
                             numberOfCroatiaAlphabet++;
                             i++;
@@ -62,15 +56,7 @@ public class Problem2941 {
                         }
                     }
 
-                    if (input[i] == 'n') {
-                        if (input[i + 1] == 'j') {
-                            numberOfCroatiaAlphabet++;
-                            i++;
-                            continue;
-                        }
-                    }
-
-                    if (input[i] == 's') {
+                    if (input[i] == 's' || input[i] == 'z') {
                         if (input[i + 1] == '=') {
                             numberOfCroatiaAlphabet++;
                             i++;
@@ -78,13 +64,6 @@ public class Problem2941 {
                         }
                     }
 
-                    if (input[i] == 'z') {
-                        if (input[i + 1] == '=') {
-                            numberOfCroatiaAlphabet++;
-                            i++;
-                            continue;
-                        }
-                    }
                     numberOfCroatiaAlphabet++;
                 }catch (Exception e){
                     numberOfCroatiaAlphabet++;
