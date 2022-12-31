@@ -28,24 +28,27 @@ public class Problem1316 {
 
         for(int i = 0; i < n; i++) {
             char[] charArray =  br.readLine().toCharArray();
+            check.clear();
 
             for(int j = 0; j < charArray.length; j++) {
-                 try {
-                     if (charArray[j] != charArray[j + 1]) {
-                         if (!check.add(charArray[j])) {
-                             System.out.println("dup");
-                             break;
-                         } else {
-                             check.add(charArray[j]);
-                         }
-                     }
-                 } catch (IndexOutOfBoundsException e){
-                     System.out.println("per");
-                     count++;
-                     break;
-                 }
 
+                if(j == charArray.length-1){
+                    if(!check.add(charArray[j])){
+                        break;
+                    }
+                } else {
+                    if (charArray[j] != charArray[j + 1]) {
+                        if (!check.add(charArray[j])) {
+                            break;
+                        }
+                    }
+                }
+
+                if(j == charArray.length-1){
+                    count++;
+                }
             }
+
 
         }
 
