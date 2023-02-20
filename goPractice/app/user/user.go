@@ -2,33 +2,36 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
-	//_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+
+	"github.com/rs/cors"
+
+	//"github.com/go-sql-driver/mysql"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	email    string `gorm:"column:email"`
-	password string `gorm:"column:password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Nickname string `json:"nickname"`
 	//password 인코딩 패키지 필요할 듯
 }
 
 func MakeHandler() http.Handler {
 	mux := mux.NewRouter()
-	mux.HandleFunc("/signup", SignUpHandler).Methods("GET")
+	mux.HandleFunc("/signup", SignUpHandler).Methods("POST")
 
 	return mux
 }
 
 func SignUpHandler(w http.ResponseWriter, r *http.Request) {
-	var user User = User{
-		email:    "qw553@nate.com",
-		password: "qw553",
-	}
+	var user User
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -41,11 +44,26 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	//	gorm은 구조체 이름의 마지막에 "s"를 붙여서 테이블을 만든다.
 	// created_at, updated_at, deleted_at 필드를 기본으로 생성한다.
 	// auto_increment 옵션을 가진 id 필드를 기본으로 생성한다.
-	//db.CreateTable(&User{})
+	//테이블 생성 이래 계속 나둬도 되나?
+	db.AutoMigrate(&User{})
+	fmt.Println("************************************")
 	db.Create(&user)
+	message := "가입 성공"
+	w.Write([]byte(`{"message": "` + message + `"}`))
+
 }
 
 func main() {
-	http.ListenAndServe(":3000", MakeHandler())
+	//cors도 따로 뺴야될듯?
+	cors := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{
+			http.MethodPost,
+			http.MethodGet,
+		},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: false,
+	})
+	http.ListenAndServe(":3000", cors.Handler(MakeHandler()))
 
 }
