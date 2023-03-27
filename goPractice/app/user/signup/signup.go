@@ -15,9 +15,9 @@ import (
 
 type User struct {
 	gorm.Model
-	Email    string `json:"email"`
+	Email    string `json:"email"  gorm:"unique"`
 	Password string `json:"password"`
-	Nickname string `json:"nickname"`
+	Nickname string `json:"nickname"  gorm:"unique"`
 	//password 인코딩 패키지 필요할 듯
 }
 
@@ -36,6 +36,7 @@ func VerifyPassword(hashedPassword string, candidatePassword string) error {
 
 // 회원 가입
 // 핸들러 부분이랑 로직 부분 나누는듯?
+// 아이디 / 닉네임 중복 방지 해야함
 func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	var user User
 

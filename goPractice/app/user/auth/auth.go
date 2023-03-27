@@ -71,6 +71,14 @@ func GoogleAuthCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//var user signup.User
+
+	fmt.Println(string(data))
+
+	//dsn := "eddi:eddi@123@tcp(localhost:3306)/golang_db?charset=utf8mb4&parseTime=True&loc=Local"
+	//db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	//db.Create(&user)
+
 	fmt.Fprint(w, string(data))
 }
 
