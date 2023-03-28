@@ -7,12 +7,16 @@ import (
 	"github.com/rs/cors"
 
 	"goPractice/app/user/auth"
+	"goPractice/app/user/signin"
 	"goPractice/app/user/signup"
 )
 
 func MakeHandler() http.Handler {
 	mux := mux.NewRouter()
 	mux.HandleFunc("/signup", signup.SignUpHandler).Methods("POST")
+	mux.HandleFunc("/signin", signin.SignInHandler).Methods("POST")
+
+	//oauth
 	mux.HandleFunc("/auth/google/login", auth.GoogleLoginHandler)
 	mux.HandleFunc("/auth/google/callback", auth.GoogleAuthCallback)
 
