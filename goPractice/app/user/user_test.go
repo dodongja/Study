@@ -14,12 +14,12 @@ type Message struct {
 	Message string
 }
 
-func TestJsonHandler(t *testing.T) {
+func TestSignUp(t *testing.T) {
 	assert := assert.New(t)
 
 	res := httptest.NewRecorder()
 	req := httptest.NewRequest("POST", "/signup",
-		strings.NewReader(`{"Email" : "qs553@nate.com" , "Password" : "ehdwk1", "Nickname" : "dongja"}`))
+		strings.NewReader(`{"Email" : "qs553@nate.com" , "Password" : "ehdwk1", "Nickname" : "dongja2"}`))
 
 	mux := MakeHandler()
 	mux.ServeHTTP(res, req)
@@ -32,4 +32,17 @@ func TestJsonHandler(t *testing.T) {
 	assert.Nil(err)
 	assert.Equal("가입 성공", message.Message)
 
+}
+
+func TestSignIn(t *testing.T) {
+	assert := assert.New(t)
+
+	res := httptest.NewRecorder()
+	req := httptest.NewRequest("POST", "/signin",
+		strings.NewReader(`{"Email" : "qs553@nate.com" , "Password" : "ehdwk1"}`))
+
+	mux := MakeHandler()
+	mux.ServeHTTP(res, req)
+
+	assert.Equal(http.StatusOK, res.Code)
 }
