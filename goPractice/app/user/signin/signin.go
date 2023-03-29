@@ -23,22 +23,23 @@ type SignInUser struct {
 }
 
 func SignInHandler(w http.ResponseWriter, r *http.Request) {
-	var signInUser SignInUser
+	var user signup.User
 
-	err := json.NewDecoder(r.Body).Decode(&signInUser)
+	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	checkUser(&signInUser)
+	checkUser(&user)
 
 }
 
-func checkUser(signInUser *SignInUser) {
-	var user signup.User
+func checkUser(user *signup.User) {
 	dsn := "eddi:eddi@123@tcp(localhost:3306)/golang_db?charset=utf8mb4&parseTime=True&loc=Local"
 	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
-	fmt.Print(db.First(&user, "Email = ?", signInUser.Email))
+	fmt.Println(user.Email)
+	res := db.Select("email").Where("email = ?", user.Email).Find(&user)
+	fmt.Print(res)
 }
