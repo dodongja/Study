@@ -41,5 +41,5 @@ func checkUser(user *signup.User) {
 
 	fmt.Println(user.Email)
 	res := db.Select("email").Where("email = ?", user.Email).Find(&user)
-	fmt.Print(res)
+	fmt.Println(res)
 }

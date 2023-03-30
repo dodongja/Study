@@ -46,7 +46,7 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user.Password, err = HashPassword(user.Password)
+	user.Password, _ = HashPassword(user.Password)
 
 	dsn := "eddi:eddi@123@tcp(localhost:3306)/golang_db?charset=utf8mb4&parseTime=True&loc=Local"
 	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -56,10 +56,21 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	//테이블 생성 이래 계속 나둬도 되나?
 	db.AutoMigrate(&User{})
 
-	db.Create(&user)
+	//unique 에러가 뜨는데 그게 email, nickname인지 어케 아노??
 
+	createError := db.Create(&user).Error
+	if createError != nil {
+		s := createError.Error()
+		fmt.Println(s)
+
+		return
+	}
 	resp := make(map[string]string)
 	resp["message"] = "가입 성공"
-	jsonResp, err := json.Marshal(resp)
+	jsonResp, _ := json.Marshal(resp)
 	w.Write(jsonResp)
 }
+
+// func DuplicateEmail()(){
+
+// }
