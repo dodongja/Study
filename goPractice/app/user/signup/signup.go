@@ -16,7 +16,7 @@ import (
 
 type User struct {
 	gorm.Model
-	Email    string `json:"email"`
+	Email    string `json:"email" gorm:"unique"`
 	Password string `json:"password"`
 	Nickname string `json:"nickname"`
 	//password 인코딩 패키지 필요할 듯
@@ -63,23 +63,15 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	//뭔 칼럼이 에러다라고 메서드해서 못가져오나...?
 	//그럼 결국 unique 먹이는게 더 좋을라나
 	// 앞단에 db에 값 가져와서 중복체크부터하고 Create 해야할듯??
+	//errors.Is(db.Create(&user).Error, ErrDuplicatedKey)
+	//unique 포기 걍 앞단에서 중복체크 이게맞나...
 	if checkEamilDuplication(db, &user) {
-		resp := make(map[string]string)
-		resp["message"] = "email 중복"
-		jsonResp, _ := json.Marshal(resp)
-		w.Write(jsonResp)
+		response(w, "email 중복")
 	} else if checkNicknameDuplication(db, &user) {
-		resp := make(map[string]string)
-		resp["message"] = "nickname 중복"
-		jsonResp, _ := json.Marshal(resp)
-		w.Write(jsonResp)
+		response(w, "nickname 중복")
 	} else {
 		db.Create(&user)
-
-		resp := make(map[string]string)
-		resp["message"] = "가입 성공"
-		jsonResp, _ := json.Marshal(resp)
-		w.Write(jsonResp)
+		response(w, "가입 성공")
 	}
 
 }
@@ -107,4 +99,11 @@ func checkNicknameDuplication(db *gorm.DB, user *User) bool {
 		return true
 	}
 	return false
+}
+
+func response(w http.ResponseWriter, msg string) {
+	resp := make(map[string]string)
+	resp["message"] = msg
+	jsonResp, _ := json.Marshal(resp)
+	w.Write(jsonResp)
 }
