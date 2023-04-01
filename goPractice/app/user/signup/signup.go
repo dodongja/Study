@@ -63,9 +63,14 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	//뭔 칼럼이 에러다라고 메서드해서 못가져오나...?
 	//그럼 결국 unique 먹이는게 더 좋을라나
 	// 앞단에 db에 값 가져와서 중복체크부터하고 Create 해야할듯??
-	if checkUserDuplication(db, &user) {
+	if checkEamilDuplication(db, &user) {
 		resp := make(map[string]string)
 		resp["message"] = "email 중복"
+		jsonResp, _ := json.Marshal(resp)
+		w.Write(jsonResp)
+	} else if checkNicknameDuplication(db, &user) {
+		resp := make(map[string]string)
+		resp["message"] = "nickname 중복"
 		jsonResp, _ := json.Marshal(resp)
 		w.Write(jsonResp)
 	} else {
@@ -82,9 +87,20 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 // func DuplicateEmail()(){
 
 // }
-
-func checkUserDuplication(db *gorm.DB, user *User) bool {
+// 에러 핸들링 어렵네... 이게 맞나..
+// db에 값 가져와서 변수에 어케 박노
+func checkEamilDuplication(db *gorm.DB, user *User) bool {
 	check := db.First(&user, "email = ?", user.Email)
+	if errors.Is(check.Error, gorm.ErrRecordNotFound) {
+		return false
+	} else if check != nil {
+		return true
+	}
+	return false
+}
+
+func checkNicknameDuplication(db *gorm.DB, user *User) bool {
+	check := db.First(&user, "nickname = ?", user.Nickname)
 	if errors.Is(check.Error, gorm.ErrRecordNotFound) {
 		return false
 	} else if check != nil {
