@@ -2,6 +2,7 @@ package signin
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"goPractice/app/user/signup"
 	"net/http"
@@ -31,15 +32,32 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	checkUser(&user)
-
-}
-
-func checkUser(user *signup.User) {
 	dsn := "eddi:eddi@123@tcp(localhost:3306)/golang_db?charset=utf8mb4&parseTime=True&loc=Local"
 	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
+	var compareUser signup.User
+
+	findUser := db.First(&compareUser, "email = ?", user.Email)
 	fmt.Println(user.Email)
-	res := db.Select("email").Where("email = ?", user.Email).Find(&user)
-	fmt.Println(res)
+	if errors.Is(findUser.Error, gorm.ErrRecordNotFound) {
+		resp := make(map[string]string)
+		resp["message"] = "해당 ID가 존재하지 않습니다"
+		jsonResp, _ := json.Marshal(resp)
+		w.Write(jsonResp)
+		return
+	}
+
+	if signup.VerifyPassword(compareUser.Password, user.Password) != nil {
+		resp := make(map[string]string)
+		resp["message"] = "Password를 확인하세요"
+		jsonResp, _ := json.Marshal(resp)
+		w.Write(jsonResp)
+		return
+	}
+
+	resp := make(map[string]string)
+	resp["message"] = "success"
+	jsonResp, _ := json.Marshal(resp)
+	w.Write(jsonResp)
+
 }

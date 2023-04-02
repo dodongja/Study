@@ -82,7 +82,10 @@ func SignUpHandler(w http.ResponseWriter, r *http.Request) {
 // 에러 핸들링 어렵네... 이게 맞나..
 // db에 값 가져와서 변수에 어케 박노
 func checkEamilDuplication(db *gorm.DB, user *User) bool {
-	check := db.First(&user, "email = ?", user.Email)
+	//user을 만들면 거따 유저가 저장되나??
+	//그러네 ㅋㅋㅋ 이거 로직을 다시 짜긴해야될듯 ㅋㅋ 일단 pass
+	var users User
+	check := db.First(&users, "email = ?", user.Email)
 	if errors.Is(check.Error, gorm.ErrRecordNotFound) {
 		return false
 	} else if check != nil {
