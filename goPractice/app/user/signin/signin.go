@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"goPractice/app/user/jwt"
 	"goPractice/app/user/signup"
 	"net/http"
 
@@ -36,7 +37,7 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	var compareUser signup.User
-
+	//first / find 뭔차이고...
 	findUser := db.First(&compareUser, "email = ?", user.Email)
 	fmt.Println(user.Email)
 	if errors.Is(findUser.Error, gorm.ErrRecordNotFound) {
@@ -55,8 +56,19 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	accessToken, err := jwt.CreateAccessToken(w, &compareUser)
+	if err != nil {
+		resp := make(map[string]string)
+		resp["message"] = "token can't create"
+		jsonResp, _ := json.Marshal(resp)
+		w.Write(jsonResp)
+		return
+	}
+	//response body에 json 데이터 보내는거 다른 방법 찾아봐야할듯
 	resp := make(map[string]string)
 	resp["message"] = "success"
+	resp["accessToken"] = accessToken
+	resp["nickname"] = compareUser.Nickname
 	jsonResp, _ := json.Marshal(resp)
 	w.Write(jsonResp)
 
