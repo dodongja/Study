@@ -44,6 +44,7 @@ func CreateAccessToken(w http.ResponseWriter, user *signup.User) (string, error)
 		Value:   tokenString,
 		Expires: expirationTime,
 		Path:    "/",
+		Domain:  "http://localhost:8080/",
 		// HttpOnly: true,
 		Secure:   true,
 		SameSite: http.SameSiteNoneMode,

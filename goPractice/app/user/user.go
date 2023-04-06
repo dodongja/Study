@@ -26,13 +26,13 @@ func MakeHandler() http.Handler {
 func main() {
 	//cors도 따로 뺴야될듯?
 	cors := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
+		AllowedOrigins: []string{"http://localhost:8080"},
 		AllowedMethods: []string{
 			http.MethodPost,
 			http.MethodGet,
 		},
 		AllowedHeaders:   []string{"*"},
-		AllowCredentials: false,
+		AllowCredentials: true,
 	})
 	http.ListenAndServe(":3000", cors.Handler(MakeHandler()))
 
