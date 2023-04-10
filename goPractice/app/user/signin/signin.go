@@ -55,20 +55,26 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write(jsonResp)
 		return
 	}
-
-	accessToken, err := jwt.CreateAccessToken(w, &compareUser)
-	if err != nil {
+	//뭔가 코드가 반복됨 흠..
+	if _, err := jwt.CreateAccessToken(w, &compareUser); err != nil {
 		resp := make(map[string]string)
 		resp["message"] = "token can't create"
 		jsonResp, _ := json.Marshal(resp)
 		w.Write(jsonResp)
 		return
 	}
+
+	if _, err := jwt.CreateRefreshToken(w); err != nil {
+		resp := make(map[string]string)
+		resp["message"] = "token can't create"
+		jsonResp, _ := json.Marshal(resp)
+		w.Write(jsonResp)
+		return
+	}
+
 	//response body에 json 데이터 보내는거 다른 방법 찾아봐야할듯
 	resp := make(map[string]string)
 	resp["message"] = "success"
-	resp["accessToken"] = accessToken
-	resp["nickname"] = compareUser.Nickname
 	jsonResp, _ := json.Marshal(resp)
 	w.Write(jsonResp)
 
