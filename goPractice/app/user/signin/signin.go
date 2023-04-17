@@ -64,7 +64,7 @@ func SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err := jwt.CreateRefreshToken(w); err != nil {
+	if _, err := jwt.CreateRefreshToken(w, &compareUser); err != nil {
 		resp := make(map[string]string)
 		resp["message"] = "token can't create"
 		jsonResp, _ := json.Marshal(resp)

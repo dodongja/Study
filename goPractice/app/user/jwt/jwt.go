@@ -7,9 +7,42 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-redis/redis"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 )
+
+func initializeRedisClient() (*redis.Client, error) {
+
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379", // 접근 url 및 port
+		Password: "",               // password ""값은 없다는 뜻
+		DB:       0,                // 기본 DB 사용
+	})
+
+	_, err := client.Ping().Result()
+
+	return client, err
+}
+
+func executeSomething(uuid string, nickname string, exp time.Time) error {
+
+	client, err := initializeRedisClient()
+
+	if nil != err {
+		panic(err)
+	}
+
+	now := time.Now()
+	expiration := time.Unix(exp.Unix(), 0)
+
+	saveErr := client.Set(uuid, nickname, expiration.Sub(now)).Err()
+	if err != nil {
+		return saveErr
+	}
+
+	return nil
+}
 
 func CreateAccessToken(w http.ResponseWriter, user *signup.User) (string, error) {
 	expirationTime := time.Now().Add(5 * time.Minute)
@@ -31,6 +64,8 @@ func CreateAccessToken(w http.ResponseWriter, user *signup.User) (string, error)
 		return "", err
 	}
 
+	executeSomething(accessUUID, user.Nickname, expirationTime)
+
 	// Finally, we set the client cookie for "token" as the JWT we just generated
 	// we also set an expiry time which is the same as the token itself
 	http.SetCookie(w, &http.Cookie{
@@ -48,7 +83,7 @@ func CreateAccessToken(w http.ResponseWriter, user *signup.User) (string, error)
 
 }
 
-func CreateRefreshToken(w http.ResponseWriter) (string, error) {
+func CreateRefreshToken(w http.ResponseWriter, user *signup.User) (string, error) {
 	expirationTime := time.Now().Add(time.Hour * 24 * 7)
 	// Create the JWT claims, which includes the username and expiry time
 	refreshUUID := uuid.NewString()
@@ -67,6 +102,8 @@ func CreateRefreshToken(w http.ResponseWriter) (string, error) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return "", err
 	}
+
+	executeSomething(refreshUUID, user.Nickname, expirationTime)
 
 	// Finally, we set the client cookie for "token" as the JWT we just generated
 	// we also set an expiry time which is the same as the token itself
