@@ -8,6 +8,15 @@ func main() {
 	var answer int
 
 	number := map[string]int{
+		"1": 1,
+		"2": 2,
+		"3": 3,
+		"4": 4,
+		"5": 5,
+		"6": 6,
+		"7": 7,
+		"8": 8,
+		"9": 9,
 		"A": 10,
 		"B": 11,
 		"C": 12,
@@ -40,20 +49,16 @@ func main() {
 
 	numberLength := len(n)
 
+	fmt.Println("n[iii]", string(n[0]))
+
 	for i := 0; i < numberLength; i++ {
 		placeValue := 1
-		if number[string(n[i])] == 0 {
-			for j := 0; j < numberLength-1-i; j++ {
-				placeValue *= b
-			}
-			placeValue *= int(n[i])
-		} else {
-			for j := 0; j < numberLength-1-i; j++ {
-				placeValue *= b
-			}
-			placeValue *= number[string(n[i])]
+
+		for j := 0; j < numberLength-1-i; j++ {
+			placeValue *= b
 		}
-		answer += placeValue
+
+		answer += (placeValue * number[string(n[i])])
 	}
 
 	fmt.Print(answer)
